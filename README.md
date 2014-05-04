@@ -1,8 +1,7 @@
 iFrameBox
 =========
 
-jQuery LightBox alternative to use inside iFrame
-
+Simple jQuery LightBox alternative to use inside iFrame
 
 Usage:
 
