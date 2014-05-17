@@ -20,49 +20,55 @@
 
 			var alt_text = $(this).find('img').attr('alt');
 			image_container = $('<div class="pop_image_container"><p>' + alt_text + '</p></div>');
-			image = $('<img id="custom_poped_image" src="' + image_url + '">');
+			var image = $('<img id="custom_poped_image" src="' + image_url + '">');
 
-			image.appendTo(image_container);
+			var loaded = false, wait;
+			image.load(function () { loaded = true; });
 
-			image_container.appendTo(overlay);
+			wait = setInterval(function () {
+				loaded ? clearInterval(wait) : setParameters(image.outerWidth(true), image.outerHeight(true));
+			}, 0);
 
-			overlay.fadeIn('fast');
-			var width = image.outerWidth();
-			if (width > 700) {
-				width = 700;
+			function  setParameters(width, height) {
+				if (width > 700) {
+					width = 700;
+					image.css({
+						'width': width + 'px',
+						'height': 'auto'
+					})
+				}
+				var windowH = $(parent.window).height();
+				var windowW = $(parent.window).width();
+				$(parent.document).find('.pop_image_container').css({
+					'position':"fixed",
+					'opacity': '1',
+					'width': width,
+					'height': height,
+					'left': ((windowW - width)/2 + $(parent.document).scrollLeft()),
+					'top': ((windowH - height)/2),
+					'z-index': '10001'
+				})
+				image_container.find('p').css({
+					'position': 'absolute',
+					'text-align': 'center',
+					'width': '100%',
+					'bottom':'-40px',
+					'font-weight':'bold',
+					'color': '#FFF'
+				})
 				image.css({
-					'width': width + 'px',
-					'height': 'auto'
+					'border':'5px solid #888',
+					'border-bottom': '45px solid #888',
+					'-webkit-box-shadow': '4px 4px 4px #777',
+					'-moz-box-shadow': '4px 4px 4px #777',
+					'box-shadow': '4px 4px 4px #777'
 				})
 			}
 
-			var windowH = $(parent.window).height();
-			var windowW = $(parent.window).width();
-			$(parent.document).find('.pop_image_container').css({
-				'position':"fixed",
-				'opacity': '1',
-				'width': image.outerWidth(true),
-				'height': image.outerHeight(true),
-				'left': ((windowW - width)/2 + $(parent.document).scrollLeft()),
-				'top': ((windowH - image.outerHeight())/2),
-				'z-index': '10001'
-			})
-			image_container.find('p').css({
-				'position': 'absolute',
-				'text-align': 'center',
-				'width': '100%',
-				'bottom':'-40px',
-				'font-weight':'bold',
-				'color': '#FFF'
-			})
-			image.css({
-				'border':'5px solid #888',
-				'border-bottom': '45px solid #888',
-				'-webkit-box-shadow': '4px 4px 4px #777',
-				'-moz-box-shadow': '4px 4px 4px #777',
-				'box-shadow': '4px 4px 4px #777'
-			})
+			overlay.fadeIn('fast');
+			image.appendTo(image_container);
 
+			image_container.appendTo(overlay);
 		});
 
 		$(document).add(parent.document).mouseup(function (e)
