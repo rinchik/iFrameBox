@@ -1,7 +1,7 @@
 iFrameBox
 =========
 
-Simple cross-browser jQuery LightBox alternative to use inside iFrame
+Simple cross-browser jQuery LightBox alternative to use inside iFrame (it pops images from the inside of iFrame to paret document)
 
 Usage:
 
